@@ -1,0 +1,17 @@
++============================================================+
+[     AUTO LOGIN JARINGAN WIFI ID REGULER VIOLET DLL         ]
+[                        TARBARU 2023                        ]
++============================================================+
+# Simpan Pada Menu Script Dengan Nama wifi id
+:local username ""
+:local password ""
+:local gwid ""
+:local wlanid "";
+:local ip [:pick [:ip address get [:ip addres find interface=wlan1] address] 0 ([:len [:ip address get [:ip addres find interface=wlan1] address]]-3) ];
+:local mac [/interface wireless get [ find default-name=wlan1] mac-address];
+:tool fetch mode=https http-header-field="Content-Type: application/x-www-form-urlencoded; charset=UTF-8,User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36,Referer: https://welcome2.wifi.id" http-method=post http-data="username=$username&password=$password" url="https://welcome2.wifi.id/authnew/login/check_login.php?ipc=$ip&gw_id=$gwid&mac=$mac&redirect=http://www.msftconnecttest.com/redirect&wlan=$wlanid&load_wp=";
+
+# Simpan Pada Menu Scheduler Dengan Durasi Minimal 10 Detik
+:if ([:ping 8.8.8.8 count=5 interface=wlan1]=0) do={
+    :system script run wifiid;
+}
